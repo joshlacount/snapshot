@@ -5,6 +5,7 @@ import spotipy
 import uuid
 import threading
 import difflib
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(64)
@@ -47,6 +48,18 @@ def sign_out():
 	except OSError as e:
 		print("Error: %s - %s." % (e.filename, e.strerror))
 	return redirect('/')
+
+@app.route('/api/playlists', methods=['GET'])
+def get_playlists():
+	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
+	auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+	spotify = spotipy.Spotify(auth_manager=auth_manager)
+	playlists_response = spotify.current_user_playlists()
+	playlists = []
+	for playlist in playlists_response['items']:
+		p = { 'id': playlist['id'], 'name': playlist['name'] }
+		playlists.append(p)
+	return json.dumps(playlists)	
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8080)

@@ -6,7 +6,12 @@
 		<title>Snapshot</title>
 	</head>
 	<body>
-		<h1>Hey there <span id="display_name">{{ display_name }}</span></h1>
-		<small><a href="/sign_out">[sign out]<a/></small>
+		<h1>
+			Hey there <span id="display_name">{{ display_name }}</span>
+			<small><a href="/sign_out">[sign out]<a/></small>
+		</h1>
+		<br>
+		<select id="playlist"></select>
 	</body>
+	<script src="{{url_for('static', filename='index.js')}}"></script>
 </html>
