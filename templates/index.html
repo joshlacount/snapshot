@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Snapshot</title>
+		<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 	</head>
 	<body>
 		<h1>
@@ -11,7 +12,7 @@
 			<small><a href="/sign_out">[sign out]<a/></small>
 		</h1>
 		<br>
-		<select id="playlist"></select>
+		<select id="playlist" size=10></select>
 	</body>
 	<script src="{{url_for('static', filename='index.js')}}"></script>
 </html>
