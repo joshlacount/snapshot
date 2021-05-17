@@ -6,6 +6,8 @@ import uuid
 import threading
 import difflib
 import json
+from datetime import datetime
+import psql
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(64)
@@ -37,7 +39,7 @@ def index():
 		return render_template('sign-in.html', auth_url=auth_url)
 
 	spotify = spotipy.Spotify(auth_manager=auth_manager)
-	display_name = spotify.me()["display_name"]
+	display_name = spotify.me()['display_name']
 	return render_template('index.html', display_name=display_name)          
 
 @app.route('/sign_out')
@@ -59,7 +61,29 @@ def get_playlists():
 	for playlist in playlists_response['items']:
 		p = { 'id': playlist['id'], 'name': playlist['name'] }
 		playlists.append(p)
-	return json.dumps(playlists)	
+	return json.dumps(playlists)
+
+@app.route('/api/save-snapshot/', methods=['POST'])
+def save_snapshot():
+	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
+	auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+	spotify = spotipy.Spotify(auth_manager=auth_manager)
+
+	playlist_id = request.form['playlist_id']
+	playlist = spotify.playlist(playlist_id, fields='snapshot_id,tracks.items.track.id')
+	snapshot_id = playlist['snapshot_id']
+	user_id = spotify.me()['id']
+
+	if psql.get_snapshot(snapshot_id, user_id) is not None:
+		return "duplicate"
+
+	track_ids = [item['track']['id'] for item in playlist['tracks']['items']]
+	dt = datetime.today()
+
+	snapshot = (snapshot_id, dt, dt, playlist_id, user_id, track_ids)
+	psql.insert_snapshot(snapshot)
+
+	return "success"
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8080)
