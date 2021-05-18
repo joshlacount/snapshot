@@ -35,6 +35,17 @@ def get_snapshot(snapshot_id, user_id):
 		return None
 	return records[0]
 
+def get_snapshots(playlist_id, user_id):
+	with get_con() as con:
+		cur = con.cursor()
+		cur.execute("""
+			SELECT * FROM snapshot
+			WHERE playlist_id = %s AND user_id = %s
+			ORDER BY timestamp DESC;""",
+			(playlist_id, user_id))
+		records = cur.fetchall()
+	return records
+
 if __name__ == '__main__':
 	import datetime
 

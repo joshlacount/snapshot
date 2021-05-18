@@ -14,7 +14,8 @@
 		<br>
 		<button id="save-snapshot" type="button">Save Snapshot</button>
 		<br>
-		<select id="playlist" size=10></select>
+		<select id="playlist" size=10 onchange="update_snapshot_select()"></select>
+		<select id="snapshot" size=10></select>
 	</body>
 	<script src="{{url_for('static', filename='index.js')}}"></script>
 </html>

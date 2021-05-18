@@ -30,7 +30,7 @@ def index():
 	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
 	auth_manager = spotipy.oauth2.SpotifyOAuth(scope='user-read-private user-read-currently-playing playlist-read-private', cache_handler=cache_handler, show_dialog=True)
 
-	if request.args.get("code"):
+	if request.args.get('code'):
 		auth_manager.get_access_token(request.args.get("code"), as_dict=False)
 		return redirect('/')
 
@@ -63,7 +63,7 @@ def get_playlists():
 		playlists.append(p)
 	return json.dumps(playlists)
 
-@app.route('/api/save-snapshot/', methods=['POST'])
+@app.route('/api/save-snapshot', methods=['POST'])
 def save_snapshot():
 	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
 	auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
@@ -79,11 +79,25 @@ def save_snapshot():
 
 	track_ids = [item['track']['id'] for item in playlist['tracks']['items']]
 	dt = datetime.today()
+	name = dt.replace(microsecond=0).isoformat()
 
-	snapshot = (snapshot_id, dt, dt, playlist_id, user_id, track_ids)
+	snapshot = (snapshot_id, dt, name, playlist_id, user_id, track_ids)
 	psql.insert_snapshot(snapshot)
 
 	return "success"
+
+@app.route('/api/snapshots', methods=['GET'])
+def get_snapshots():
+	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
+	auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+	spotify = spotipy.Spotify(auth_manager=auth_manager)
+
+	playlist_id = request.args.get('playlist_id')
+	user_id = spotify.me()['id']
+	snapshots_full = psql.get_snapshots(playlist_id, user_id)
+
+	snapshots_partial = [{ 'id': snapshot[0], 'name': snapshot[2] } for snapshot in snapshots_full]
+	return json.dumps(snapshots_partial)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8080)
