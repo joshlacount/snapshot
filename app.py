@@ -42,7 +42,7 @@ def index():
 	display_name = spotify.me()['display_name']
 	return render_template('index.html', display_name=display_name)          
 
-@app.route('/sign_out')
+@app.route('/sign-out')
 def sign_out():
 	try:
 		os.remove(session_cache_path())

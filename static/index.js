@@ -18,6 +18,8 @@ function update_playlist_select() {
 			opt.innerHTML = playlist['name'];
 			playlist_select.appendChild(opt);
 		}
+		playlist_select.options[0].selected = true;
+		update_snapshot_select();
 	}
 	request.send();
 }
@@ -27,7 +29,7 @@ function update_snapshot_select() {
 	const playlist_id = playlist_select.value;
 
 	const snapshot_select = document.getElementById('snapshot');
-	for (i = snapshot_select.options.length-1; i >= 0; i--) {
+	for (i = snapshot_select.options.length-1; i >= 1; i--) {
 		snapshot_select.options[i] = null;
 	}
 
