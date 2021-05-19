@@ -1,3 +1,8 @@
+const SnapshotSaveResult = {
+	'SUCCESS': 0,
+	'DUPLICATE': 1
+}
+
 function update_playlist_select() {
 	const playlist_select = document.getElementById('playlist');
 	for (i = playlist_select.options.length-1; i >= 0; i--) {
@@ -32,6 +37,7 @@ function update_snapshot_select() {
 	for (i = snapshot_select.options.length-1; i >= 1; i--) {
 		snapshot_select.options[i] = null;
 	}
+	snapshot_select.options[0].selected = true;
 
 	const request = new XMLHttpRequest();
 	request.open('GET', `/api/snapshots?playlist_id=${playlist_id}`);
@@ -65,6 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		request.onload = () => {
 			const response = request.responseText;
 			console.log(response);
+			if (response == SnapshotSaveResult.DUPLICATE) {
+				alert("Already have a current snapshot");
+			}
 		}
 		request.send(params);
 	}

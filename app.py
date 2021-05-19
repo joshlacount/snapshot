@@ -8,6 +8,11 @@ import difflib
 import json
 from datetime import datetime
 import psql
+from enum import Enum
+
+class SnapshotSaveResult(Enum):
+	SUCCESS = 0
+	DUPLICATE = 1
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(64)
@@ -75,7 +80,7 @@ def save_snapshot():
 	user_id = spotify.me()['id']
 
 	if psql.get_snapshot(snapshot_id, user_id) is not None:
-		return "duplicate"
+		return str(SnapshotSaveResult.DUPLICATE.value)
 
 	track_ids = [item['track']['id'] for item in playlist['tracks']['items']]
 	dt = datetime.today()
@@ -84,7 +89,7 @@ def save_snapshot():
 	snapshot = (snapshot_id, dt, name, playlist_id, user_id, track_ids)
 	psql.insert_snapshot(snapshot)
 
-	return "success"
+	return str(SnapshotSaveResult.SUCCESS.value)
 
 @app.route('/api/snapshots', methods=['GET'])
 def get_snapshots():
