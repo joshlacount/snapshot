@@ -9,10 +9,19 @@
 	<body>
 		<h1>
 			Hey there <span id="display_name">{{ display_name }}</span>
-			<small><a href="/sign_out">[sign out]<a/></small>
+			<small><a href="/sign-out">[sign out]<a/></small>
 		</h1>
-		<br>
-		<select id="playlist" size=10></select>
+		<div>
+			<div>
+				<button id="save-snapshot" type="button">Save Snapshot</button>
+			</div>
+			<div>
+				<select id="playlist" size=10 onchange="update_snapshot_select()"></select>
+				<select id="snapshot" size=10>
+					<option value="current" selected>Current Tracks</option>
+				</select>
+			</div>
+		</div>
 	</body>
 	<script src="{{url_for('static', filename='index.js')}}"></script>
 </html>
