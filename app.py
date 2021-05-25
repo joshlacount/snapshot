@@ -75,14 +75,21 @@ def save_snapshot():
 	spotify = spotipy.Spotify(auth_manager=auth_manager)
 
 	playlist_id = request.form['playlist_id']
-	playlist = spotify.playlist(playlist_id, fields='snapshot_id,tracks.items.track.id')
+	playlist = spotify.playlist(playlist_id, fields='snapshot_id,tracks(items.track.id, next)')
 	snapshot_id = playlist['snapshot_id']
 	user_id = spotify.me()['id']
 
 	if psql.get_snapshot(snapshot_id, user_id) is not None:
 		return str(SnapshotSaveResult.DUPLICATE.value)
 
-	track_ids = [item['track']['id'] for item in playlist['tracks']['items']]
+	playlist_tracks = playlist['tracks']
+	track_ids = []
+	while True:
+		track_ids += [item['track']['id'] for item in playlist_tracks['items'] if item['track']['id']]
+		if not playlist_tracks['next']:
+			break
+		playlist_tracks = spotify.next(playlist_tracks)
+
 	dt = datetime.today()
 	name = dt.replace(microsecond=0).isoformat()
 
@@ -103,6 +110,35 @@ def get_snapshots():
 
 	snapshots_partial = [{ 'id': snapshot[0], 'name': snapshot[2] } for snapshot in snapshots_full]
 	return json.dumps(snapshots_partial)
+
+@app.route('/api/tracks', methods=['GET'])
+def get_tracks():
+	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
+	auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+	spotify = spotipy.Spotify(auth_manager=auth_manager)
+
+	tracks = []
+
+	if snapshot_id := request.args.get('snapshot_id'):
+		user_id = spotify.me()['id']
+		track_ids = psql.get_snapshot_tracks(snapshot_id, user_id)
+
+		if track_ids is None:
+			return '[]'
+
+		for i in range(0, len(track_ids), 50):
+			result = spotify.tracks(track_ids[i:i+50])
+			tracks += [{ 'id': track['id'], 'title': track['name'], 'artist': track['artists'][0]['name'] } for track in result['tracks']]
+
+	elif playlist_id := request.args.get('playlist_id'):
+		result = spotify.playlist_items(playlist_id, fields='items.track(artists.name, id, name),next')
+		while True:
+			tracks += [{ 'id': item['track']['id'], 'title': item['track']['name'], 'artist': item['track']['artists'][0]['name'] } for item in result['items']]
+			if not result['next']:
+				break
+			result = spotify.next(result)
+
+	return json.dumps(tracks)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8080)

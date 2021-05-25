@@ -4,7 +4,7 @@ const SnapshotSaveResult = {
 }
 
 function update_playlist_select() {
-	const playlist_select = document.getElementById('playlist');
+	const playlist_select = document.getElementById('playlist-select');
 	for (i = playlist_select.options.length-1; i >= 0; i--) {
 		playlist_select.options[i] = null;
 	}
@@ -30,14 +30,15 @@ function update_playlist_select() {
 }
 
 function update_snapshot_select() {
-	const playlist_select = document.getElementById('playlist');
+	const playlist_select = document.getElementById('playlist-select');
 	const playlist_id = playlist_select.value;
 
-	const snapshot_select = document.getElementById('snapshot');
+	const snapshot_select = document.getElementById('snapshot-select');
 	for (i = snapshot_select.options.length-1; i >= 1; i--) {
 		snapshot_select.options[i] = null;
 	}
 	snapshot_select.options[0].selected = true;
+	snapshot_select.options[0].value = playlist_id;
 
 	const request = new XMLHttpRequest();
 	request.open('GET', `/api/snapshots?playlist_id=${playlist_id}`);
@@ -52,6 +53,45 @@ function update_snapshot_select() {
 			opt.innerHTML = snapshot['name'];
 			snapshot_select.appendChild(opt);
 		}
+		update_tracks_table();
+	}
+	request.send();
+}
+
+function update_tracks_table(is_current=false) {
+	const snapshot_select = document.getElementById('snapshot-select');
+	const id = snapshot_select.value;
+
+	if (snapshot_select.selectedIndex == 0) {
+		var url = `/api/tracks?playlist_id=${id}`;
+	}
+	else {
+		var url = `/api/tracks?snapshot_id=${id}`;
+	}
+
+	const tracks_table = document.getElementById('tracks-table');
+	if (tracks_table.tBodies.length != 0) {
+		tracks_table.removeChild(tracks_table.tBodies[0]);
+	}
+
+	const request = new XMLHttpRequest();
+	request.open('GET', url);
+	request.onload = () => {
+		const response = request.responseText;
+		const tracks = JSON.parse(response);
+
+		const new_tbody = document.createElement('tbody');
+
+		for (i = 0; i < tracks.length; i++) {
+			const new_row = new_tbody.insertRow(-1);
+			for (j = 0; j < 3; j++) {
+				new_row.insertCell();
+			}
+			new_row.cells[1].innerHTML = tracks[i]['title'];
+			new_row.cells[2].innerHTML = tracks[i]['artist'];
+		}
+
+		tracks_table.appendChild(new_tbody);
 	}
 	request.send();
 }
@@ -61,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const save_snapshot_button = document.getElementById('save-snapshot');
 	save_snapshot_button.onclick = () => {
-		const playlist_select = document.getElementById('playlist');
+		const playlist_select = document.getElementById('playlist-select');
 		const playlist_id = playlist_select.value;
 		const params = `playlist_id=${playlist_id}`;
 
