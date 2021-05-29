@@ -46,16 +46,17 @@ def get_snapshots(playlist_id, user_id):
 		records = cur.fetchall()
 	return records
 
-if __name__ == '__main__':
-	import datetime
+def get_snapshot_tracks(snapshot_id, user_id):
+	with get_con() as con:
+		cur = con.cursor()
+		cur.execute("""
+			SELECT track_ids FROM snapshot
+			WHERE snapshot_id = %s AND user_id = %s;""",
+			(snapshot_id, user_id))
+		records = cur.fetchall()
+	if len(records[0]) == 0:
+		return None
+	return records[0][0]
 
-	"""snapshot = {
-		'snapshot_id': 'abc123',
-		'timestamp': datetime.datetime.today(),
-		'name': 'test',
-		'playlist_id': 'def456',
-		'user_id': 'ghi789',
-		'track_ids': ['123', '456', '789']
-	}
-	insert_snapshot(snapshot)"""
-	print(get_snapshot('abc123', 'ghi789'))
+if __name__ == '__main__':
+	print(len(get_snapshot_tracks('MTIwNCw2YmM0ZmE0ZjYxNTI4NDQyOWExYzY4ZmE3ZjhjM2QwMDNjYzAxZDU5', 'raider7820')))

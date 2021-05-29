@@ -16,10 +16,25 @@
 				<button id="save-snapshot" type="button">Save Snapshot</button>
 			</div>
 			<div>
-				<select id="playlist" size=10 onchange="update_snapshot_select()"></select>
-				<select id="snapshot" size=10>
-					<option value="current" selected>Current Tracks</option>
-				</select>
+				<div>
+					<select id="playlist-select" size=10 onchange="update_snapshot_select()"></select>
+					<select id="snapshot-select" size=10 onchange="update_tracks_table()">
+						<option selected>Current Tracks</option>
+					</select>
+				</div>
+				<div id="tracks-table-container">
+					<table id="tracks-table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Title</th>
+								<th>Artist</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</body>
