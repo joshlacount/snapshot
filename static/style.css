@@ -21,3 +21,13 @@ th {
 	height: 600px;
 	overflow-y: scroll;
 }
+
+.play-btn {
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+}
+
+.play-btn-col {
+	text-align: center;
+}
