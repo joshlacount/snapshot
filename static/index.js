@@ -102,6 +102,7 @@ function update_tracks_table(is_current=false) {
 		const track_ids = Array.from(tracks, track => track['id']);
 		const new_play_all_button = create_play_button(track_ids);
 		new_play_all_button.id = 'play-all-btn';
+		new_play_all_button.title = 'Play All Tracks';
 		document.getElementById('play-all-btn').replaceWith(new_play_all_button);
 
 		const new_tbody = document.createElement('tbody');
@@ -113,7 +114,9 @@ function update_tracks_table(is_current=false) {
 			}
 
 			new_row.cells[0].className = 'play-btn-col';
-			new_row.cells[0].appendChild(create_play_button([tracks[i]['id']]));
+			const play_button = create_play_button([tracks[i]['id']]);
+			play_button.title = `Play ${tracks[i]['title']}`;
+			new_row.cells[0].appendChild(play_button);
 			new_row.cells[1].innerHTML = tracks[i]['title'];
 			new_row.cells[2].innerHTML = tracks[i]['artist'];
 		}
