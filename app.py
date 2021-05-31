@@ -140,14 +140,16 @@ def get_tracks():
 
 	return json.dumps(tracks)
 
-@app.route('/api/play-track', methods=['POST'])
-def play_track():
+@app.route('/api/play-tracks', methods=['POST'])
+def play_tracks():
 	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
 	auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
 	spotify = spotipy.Spotify(auth_manager=auth_manager)
 
-	track_id = request.args.get('track_id')
-	spotify.start_playback(uris=[f'spotify:track:{track_id}'])
+	track_ids_str = request.form['track_ids']
+	track_ids = json.loads(track_ids_str)
+	track_uris = [f'spotify:track:{id}' for id in track_ids]
+	#spotify.start_playback(uris=track_uris)
 
 	return '0'
 

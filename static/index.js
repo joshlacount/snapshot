@@ -3,21 +3,23 @@ const SnapshotSaveResult = {
 	'DUPLICATE': 1
 }
 
-function create_play_button(track_id) {
+function create_play_button(track_ids) {
 	const button = document.createElement('div');
 	button.className = 'play-btn';
 	button.innerHTML = '<i class="fas fa-play"></i>';
-	button.addEventListener('click', (e) => {
-		play_track(track_id);
+	button.addEventListener('click', () => {
+		play_tracks(track_ids);
 	});
 	return button;
 }
 
-function play_track(track_id) {
-	const params = `track_id=${track_id}`;
+function play_tracks(track_ids) {
+	const track_ids_str = JSON.stringify(track_ids);
+	const params = `track_ids=${track_ids_str}`;
 	const request = new XMLHttpRequest();
-	request.open('POST', '/api/play-track?'+params);
-	request.send();
+	request.open('POST', '/api/play-tracks');
+	request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	request.send(params);
 }
 
 function update_playlist_select() {
@@ -97,6 +99,11 @@ function update_tracks_table(is_current=false) {
 		const response = request.responseText;
 		const tracks = JSON.parse(response);
 
+		const track_ids = Array.from(tracks, track => track['id']);
+		const new_play_all_button = create_play_button(track_ids);
+		new_play_all_button.id = 'play-all-btn';
+		document.getElementById('play-all-btn').replaceWith(new_play_all_button);
+
 		const new_tbody = document.createElement('tbody');
 
 		for (i = 0; i < tracks.length; i++) {
@@ -104,8 +111,9 @@ function update_tracks_table(is_current=false) {
 			for (j = 0; j < 3; j++) {
 				new_row.insertCell();
 			}
+
 			new_row.cells[0].className = 'play-btn-col';
-			new_row.cells[0].appendChild(create_play_button(tracks[i]['id']));
+			new_row.cells[0].appendChild(create_play_button([tracks[i]['id']]));
 			new_row.cells[1].innerHTML = tracks[i]['title'];
 			new_row.cells[2].innerHTML = tracks[i]['artist'];
 		}
