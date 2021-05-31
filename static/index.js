@@ -3,11 +3,21 @@ const SnapshotSaveResult = {
 	'DUPLICATE': 1
 }
 
-function create_play_button() {
+function create_play_button(track_id) {
 	const button = document.createElement('div');
 	button.className = 'play-btn';
 	button.innerHTML = '<i class="fas fa-play"></i>';
+	button.addEventListener('click', (e) => {
+		play_track(track_id);
+	});
 	return button;
+}
+
+function play_track(track_id) {
+	const params = `track_id=${track_id}`;
+	const request = new XMLHttpRequest();
+	request.open('POST', '/api/play-track?'+params);
+	request.send();
 }
 
 function update_playlist_select() {
@@ -95,7 +105,7 @@ function update_tracks_table(is_current=false) {
 				new_row.insertCell();
 			}
 			new_row.cells[0].className = 'play-btn-col';
-			new_row.cells[0].appendChild(create_play_button());
+			new_row.cells[0].appendChild(create_play_button(tracks[i]['id']));
 			new_row.cells[1].innerHTML = tracks[i]['title'];
 			new_row.cells[2].innerHTML = tracks[i]['artist'];
 		}

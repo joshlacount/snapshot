@@ -33,7 +33,7 @@ def index():
 		session['uuid'] = str(uuid.uuid4())
 
 	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
-	auth_manager = spotipy.oauth2.SpotifyOAuth(scope='user-read-private user-read-currently-playing playlist-read-private', cache_handler=cache_handler, show_dialog=True)
+	auth_manager = spotipy.oauth2.SpotifyOAuth(scope='user-read-private playlist-read-private user-modify-playback-state playlist-modify-private', cache_handler=cache_handler, show_dialog=True)
 
 	if request.args.get('code'):
 		auth_manager.get_access_token(request.args.get("code"), as_dict=False)
@@ -139,6 +139,17 @@ def get_tracks():
 			result = spotify.next(result)
 
 	return json.dumps(tracks)
+
+@app.route('/api/play-track', methods=['POST'])
+def play_track():
+	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
+	auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+	spotify = spotipy.Spotify(auth_manager=auth_manager)
+
+	track_id = request.args.get('track_id')
+	spotify.start_playback(uris=[f'spotify:track:{track_id}'])
+
+	return '0'
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8080)
