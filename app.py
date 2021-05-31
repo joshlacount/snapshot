@@ -149,6 +149,7 @@ def play_tracks():
 	track_ids_str = request.form['track_ids']
 	track_ids = json.loads(track_ids_str)
 	track_uris = [f'spotify:track:{id}' for id in track_ids]
+	spotify.shuffle(False)
 	spotify.start_playback(uris=track_uris)
 
 	return '0'
