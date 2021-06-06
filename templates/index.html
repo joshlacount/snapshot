@@ -5,6 +5,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Snapshot</title>
 		<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+		<script src="https://kit.fontawesome.com/4186f26035.js" crossorigin="anonymous"></script>
+		<script src="{{url_for('static', filename='index.js')}}"></script>
 	</head>
 	<body>
 		<h1>
@@ -26,7 +28,11 @@
 					<table id="tracks-table">
 						<thead>
 							<tr>
-								<th></th>
+								<th>
+									<div class="play-btn" id="play-all-btn">
+										<i class="fas fa-play"></i>
+									</div>
+								</th>
 								<th>Title</th>
 								<th>Artist</th>
 							</tr>
@@ -38,5 +44,4 @@
 			</div>
 		</div>
 	</body>
-	<script src="{{url_for('static', filename='index.js')}}"></script>
 </html>

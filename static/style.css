@@ -21,3 +21,26 @@ th {
 	height: 600px;
 	overflow-y: scroll;
 }
+
+.play-btn {
+	width: 40px;
+	height: 15px;
+	display: inline-block;
+	color: lightgreen;
+}
+
+.play-btn:hover, #play-all-btn:hover {
+	color: black;
+}
+
+.play-btn:active, #play-all-btn:active {
+	color: lightgray;
+}
+
+#play-all-btn {
+	color: white;
+}
+
+.play-btn-col {
+	text-align: center;
+}
