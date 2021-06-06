@@ -33,7 +33,7 @@ def index():
 		session['uuid'] = str(uuid.uuid4())
 
 	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
-	auth_manager = spotipy.oauth2.SpotifyOAuth(scope='user-read-private playlist-read-private user-modify-playback-state playlist-modify-private', cache_handler=cache_handler, show_dialog=True)
+	auth_manager = spotipy.oauth2.SpotifyOAuth(scope='user-read-private playlist-read-private user-modify-playback-state playlist-modify-private user-read-playback-state', cache_handler=cache_handler, show_dialog=True)
 
 	if request.args.get('code'):
 		auth_manager.get_access_token(request.args.get("code"), as_dict=False)
@@ -149,6 +149,13 @@ def play_tracks():
 	track_ids_str = request.form['track_ids']
 	track_ids = json.loads(track_ids_str)
 	track_uris = [f'spotify:track:{id}' for id in track_ids]
+
+	devices = spotify.devices()['devices']
+	is_active = any(device['is_active'] for device in devices)
+
+	if not is_active:
+		return '1'
+
 	spotify.shuffle(False)
 	spotify.start_playback(uris=track_uris)
 

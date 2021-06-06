@@ -19,6 +19,12 @@ function play_tracks(track_ids) {
 	const request = new XMLHttpRequest();
 	request.open('POST', '/api/play-tracks');
 	request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	request.onload = () => {
+		const response = request.responseText;
+		if (response == '1') {
+			alert("No active Spotify player found");
+		}
+	}
 	request.send(params);
 }
 
@@ -140,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		request.onload = () => {
 			const response = request.responseText;
-			console.log(response);
 			if (response == SnapshotSaveResult.DUPLICATE) {
 				alert("Already have a current snapshot");
 			}
