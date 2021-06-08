@@ -161,5 +161,17 @@ def play_tracks():
 
 	return '0'
 
+@app.route('/api/rename-snapshot', methods=['POST'])
+def rename_snapshot():
+	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
+	auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+	spotify = spotipy.Spotify(auth_manager=auth_manager)
+
+	snapshot_id = request.form['snapshot_id']
+	new_name = request.form['new_name']
+	psql.rename_snapshot(snapshot_id, new_name)
+
+	return '0'
+
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8080)
