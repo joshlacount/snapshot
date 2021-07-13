@@ -58,5 +58,12 @@ def get_snapshot_tracks(snapshot_id, user_id):
 		return None
 	return records[0][0]
 
-if __name__ == '__main__':
-	print(len(get_snapshot_tracks('MTIwNCw2YmM0ZmE0ZjYxNTI4NDQyOWExYzY4ZmE3ZjhjM2QwMDNjYzAxZDU5', 'raider7820')))
+def rename_snapshot(snapshot_id, new_name):
+	with get_con() as con:
+		cur = con.cursor()
+		cur.execute("""
+			UPDATE snapshot
+			SET name = %s
+			WHERE snapshot_id = %s;""",
+			(new_name, snapshot_id))
+		con.commit()
