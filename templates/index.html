@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+:<html lang="en">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,33 +14,38 @@
 			<small><a href="/sign-out">[sign out]<a/></small>
 		</h1>
 		<div>
-			<div>
-				<button id="save-snapshot" type="button">Save Snapshot</button>
-			</div>
-			<div>
-				<div>
+			<div id="controls-container" class="flex-container">
+				<div id="playlist-container" class="flex-child">
+					<div>
+						<button id="save-snapshot" type="button">Save Snapshot</button>
+					</div>
 					<select id="playlist-select" size=10 onchange="update_snapshot_select()"></select>
+				</div>
+				<div id="snapshot-container" class="flex-child">
+					<div>
+						<button id="rename-snapshot" type="button">Rename Snapshot</button>
+					</div>
 					<select id="snapshot-select" size=10 onchange="update_tracks_table()">
 						<option selected>Current Tracks</option>
 					</select>
 				</div>
-				<div id="tracks-table-container">
-					<table id="tracks-table">
-						<thead>
-							<tr>
-								<th>
-									<div class="play-btn" id="play-all-btn">
-										<i class="fas fa-play"></i>
-									</div>
-								</th>
-								<th>Title</th>
-								<th>Artist</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
+			</div>
+			<div id="tracks-table-container">
+				<table id="tracks-table">
+					<thead>
+						<tr>
+							<th>
+								<div class="play-btn" id="play-all-btn">
+									<i class="fas fa-play"></i>
+								</div>
+							</th>
+							<th>Title</th>
+							<th>Artist</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</body>

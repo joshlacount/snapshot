@@ -132,6 +132,21 @@ function update_tracks_table(is_current=false) {
 	request.send();
 }
 
+function rename_snapshot(new_name) {
+	const snapshot_select = document.getElementById('snapshot-select');
+	const selected = snapshot_select.selectedOptions[0];
+	const snapshot_id = selected.value;
+
+	const params = `snapshot_id=${snapshot_id}&new_name=${new_name}`;
+	const request = new XMLHttpRequest();
+	request.open('POST', '/api/rename-snapshot');
+	request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	request.onload = () => {
+		selected.innerHTML = new_name;
+	}
+	request.send(params);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 	update_playlist_select();
 
@@ -151,5 +166,18 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		}
 		request.send(params);
+	}
+
+	const rename_snapshot_button = document.getElementById('rename-snapshot');
+	rename_snapshot_button.onclick = () => {
+		const snapshot_select = document.getElementById('snapshot-select');
+		if (snapshot_select.selectedIndex  <= 0) {
+			return;
+		}
+
+		const new_name = prompt("Enter new snapshot name");
+		if (new_name != null) {
+			rename_snapshot(new_name);
+		}
 	}
 });
