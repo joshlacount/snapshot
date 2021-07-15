@@ -168,8 +168,9 @@ def rename_snapshot():
 	spotify = spotipy.Spotify(auth_manager=auth_manager)
 
 	snapshot_id = request.form['snapshot_id']
+	user_id = spotify.me()['id']
 	new_name = request.form['new_name']
-	psql.rename_snapshot(snapshot_id, new_name)
+	psql.rename_snapshot(snapshot_id, user_id, new_name)
 
 	return '0'
 
