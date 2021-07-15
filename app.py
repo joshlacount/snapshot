@@ -33,7 +33,7 @@ def index():
 		session['uuid'] = str(uuid.uuid4())
 
 	cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
-	auth_manager = spotipy.oauth2.SpotifyOAuth(scope='user-read-private playlist-read-private user-modify-playback-state playlist-modify-private user-read-playback-state', cache_handler=cache_handler, show_dialog=True)
+	auth_manager = spotipy.oauth2.SpotifyOAuth(scope='user-read-private playlist-read-private user-modify-playback-state playlist-modify-public playlist-modify-private user-read-playback-state', cache_handler=cache_handler, show_dialog=True)
 
 	if request.args.get('code'):
 		auth_manager.get_access_token(request.args.get("code"), as_dict=False)
@@ -172,6 +172,25 @@ def rename_snapshot():
 	psql.rename_snapshot(snapshot_id, new_name)
 
 	return '0'
+
+@app.route('/api/create-playlist', methods=['POST'])
+def create_playlist():
+    try:
+        cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
+        auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+        spotify = spotipy.Spotify(auth_manager=auth_manager)
+
+        snapshot_id = request.form['snapshot_id']
+        user_id = spotify.me()['id']
+        snapshot = psql.get_snapshot(snapshot_id, user_id)
+        playlist_name = spotify.playlist(snapshot[3], 'name')['name'] 
+
+        new_playlist = spotify.user_playlist_create(user_id, f'{playlist_name} - {snapshot[2]}', False)
+        spotify.user_playlist_add_tracks(user_id, new_playlist['id'], snapshot[5])
+
+        return '0'
+    except spotipy.client.SpotifyException:
+        return '1'
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8080)

@@ -147,6 +147,29 @@ function rename_snapshot(new_name) {
 	request.send(params);
 }
 
+function create_playlist_button_on_click() {
+	const snapshot_select = document.getElementById('snapshot-select')
+	if (snapshot_select.selectedIndex <= 0) {
+		alert("Please select a snapshot");
+		return;
+	}
+	const snapshot_id = snapshot_select.selectedOptions[0].value;
+
+	const params = `snapshot_id=${snapshot_id}`;
+	const request = new XMLHttpRequest();
+	request.open('POST', '/api/create-playlist');
+	request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	request.onload = () => {
+		const response = request.responseText;
+		if (response == '1') {
+			alert("Error creating playlist");
+			return;
+		}
+		update_playlist_select();
+	}
+	request.send(params);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 	update_playlist_select();
 
