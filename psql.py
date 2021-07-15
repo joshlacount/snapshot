@@ -58,12 +58,12 @@ def get_snapshot_tracks(snapshot_id, user_id):
 		return None
 	return records[0][0]
 
-def rename_snapshot(snapshot_id, new_name):
+def rename_snapshot(snapshot_id, user_id, new_name):
 	with get_con() as con:
 		cur = con.cursor()
 		cur.execute("""
 			UPDATE snapshot
 			SET name = %s
-			WHERE snapshot_id = %s;""",
-			(new_name, snapshot_id))
+			WHERE snapshot_id = %s AND user_id = %s;""",
+			(new_name, snapshot_id, user_id))
 		con.commit()
