@@ -6,3 +6,5 @@ set_snapshot_vars
 
 .flask_session
 .spotify_caches
+
+.swp
