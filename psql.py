@@ -67,3 +67,12 @@ def rename_snapshot(snapshot_id, user_id, new_name):
             WHERE snapshot_id = %s AND user_id = %s;""",
             (new_name, snapshot_id, user_id))
         con.commit()
+
+def delete_snapshot(snapshot_id, user_id):
+    with get_con() as con:
+        cur = con.cursor()
+        cur.execute("""
+            DELETE FROM snapshot
+            WHERE snapshot_id = %s AND user_id = %s;""",
+            (snapshot_id, user_id))
+        con.commit()
