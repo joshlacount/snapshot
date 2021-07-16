@@ -148,7 +148,7 @@ function rename_snapshot(new_name) {
 }
 
 function create_playlist_button_on_click() {
-    const snapshot_select = document.getElementById('snapshot-select')
+    const snapshot_select = document.getElementById('snapshot-select');
     if (snapshot_select.selectedIndex <= 0) {
         alert("Please select a snapshot");
         return;
@@ -166,6 +166,29 @@ function create_playlist_button_on_click() {
             return;
         }
         update_playlist_select();
+    }
+    request.send(params);
+}
+
+function delete_snapshot_button_on_click() {
+    const snapshot_select = document.getElementById('snapshot-select');
+    if (snapshot_select.selectedIndex <= 0) {
+        alert("Please select a snapshot");
+        return;
+    }
+    const snapshot_id = snapshot_select.selectedOptions[0].value;
+
+    const params = `snapshot_id=${snapshot_id}`;
+    const request = new XMLHttpRequest();
+    request.open('POST', '/api/delete-snapshot');
+    request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    request.onload = () => {
+        const response = request.responseText;
+        if (response == '1') {
+            alert("Error deleting snapshot");
+            return;
+        }
+        update_snapshot_select();
     }
     request.send(params);
 }

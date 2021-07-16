@@ -23,8 +23,15 @@
         </div>
         <div id="snapshot-container" class="flex-child">
           <div>
-            <button id="rename-snapshot" type="button">Rename Snapshot</button>
-            <button id="create-playlist" type="button" onclick="create_playlist_button_on_click()">Create Playlist</button>
+            <button id="rename-snapshot" type="button">
+              Rename Snapshot
+            </button>
+            <button id="create-playlist" type="button" onclick="create_playlist_button_on_click()">
+              Create Playlist
+            </button>
+            <button id="delete-snapshot" type="button" onclick="delete_snapshot_button_on_click()">
+              Delete Snapshot
+            </button>
           </div>
           <select id="snapshot-select" size=10 onchange="update_tracks_table()">
             <option selected>Current Tracks</option>
