@@ -7,4 +7,10 @@ set_snapshot_vars
 .flask_session
 .spotify_caches
 
-*.swp
+# Vim swap
+[._]*.s[a-v][a-z]
+!*.svg
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
