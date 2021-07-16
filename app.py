@@ -193,5 +193,20 @@ def create_playlist():
     except spotipy.client.SpotifyException:
         return '1'
 
+@app.route('/api/delete-snapshot', methods=['POST'])
+def delete_snapshot():
+    try:
+        cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
+        auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+        spotify = spotipy.Spotify(auth_manager=auth_manager)
+
+        snapshot_id = request.form['snapshot_id']
+        user_id = spotify.me()['id']
+        psql.delete_snapshot(snapshot_id, user_id)
+
+        return '0'
+    except spotipy.client.SpotifyException:
+        return '1'
+
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8080)
