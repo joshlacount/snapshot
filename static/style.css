@@ -1,61 +1,61 @@
 select {
-	width: 100%;
+    width: 100%;
 }
 
 table {
-	width: 100%;
+    width: 100%;
 }
 
 td, th {
-	padding: 0.5rem;
+    padding: 0.5rem;
 }
 
 th {
-	background-color: lightgreen;
-	position: sticky;
-	top: 0;
+    background-color: lightgreen;
+    position: sticky;
+    top: 0;
 }
 
 #tracks-table-container {
-	width: 800px;
-	height: 600px;
-	overflow-y: scroll;
+    width: 800px;
+    height: 600px;
+    overflow-y: scroll;
 }
 
 .play-btn {
-	width: 40px;
-	height: 15px;
-	display: inline-block;
-	color: lightgreen;
+    width: 40px;
+    height: 15px;
+    display: inline-block;
+    color: lightgreen;
 }
 
 .play-btn:hover, #play-all-btn:hover {
-	color: black;
+    color: black;
 }
 
 .play-btn:active, #play-all-btn:active {
-	color: lightgray;
+    color: lightgray;
 }
 
 #play-all-btn {
-	color: white;
+    color: white;
 }
 
 .play-btn-col {
-	text-align: center;
+    text-align: center;
 }
 
 .flex-container {
-	display: flex;
-	justify-content: flex-start;
+    display: flex;
+    justify-content: flex-start;
 }
 
 .flex-child {
-	flex: 0 1 auto;
-	width: 100%;
-	padding: 5px;
+    flex: 0 1 auto;
+    width: 100%;
+    padding: 5px;
 }
 
 #controls-container {
-	width: 450px;
+    width: 450px;
 }
