@@ -212,7 +212,10 @@ document.addEventListener('DOMContentLoaded', () => {
         request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         request.onload = () => {
             const response = request.responseText;
-            if (response == SnapshotSaveResult.DUPLICATE) {
+            if (response == SnapshotSaveResult.SUCCESS) {
+                update_snapshot_select();
+            }
+            else if (response == SnapshotSaveResult.DUPLICATE) {
                 alert("Already have a current snapshot");
             }
         }
