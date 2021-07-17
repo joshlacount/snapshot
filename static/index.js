@@ -176,6 +176,11 @@ function delete_snapshot_button_on_click() {
         alert("Please select a snapshot");
         return;
     }
+
+    if (!confirm("Are you sure you want to delete this snapshot?  It can't be recovered.")) {
+        return;
+    }
+
     const snapshot_id = snapshot_select.selectedOptions[0].value;
 
     const params = `snapshot_id=${snapshot_id}`;
