@@ -1,53 +1,58 @@
 <!DOCTYPE html>
-:<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Snapshot</title>
-		<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
-		<script src="https://kit.fontawesome.com/4186f26035.js" crossorigin="anonymous"></script>
-		<script src="{{url_for('static', filename='index.js')}}"></script>
-	</head>
-	<body>
-		<h1>
-			Hey there <span id="display_name">{{ display_name }}</span>
-			<small><a href="/sign-out">[sign out]<a/></small>
-		</h1>
-		<div>
-			<div id="controls-container" class="flex-container">
-				<div id="playlist-container" class="flex-child">
-					<div>
-						<button id="save-snapshot" type="button">Save Snapshot</button>
-					</div>
-					<select id="playlist-select" size=10 onchange="update_snapshot_select()"></select>
-				</div>
-				<div id="snapshot-container" class="flex-child">
-					<div>
-						<button id="rename-snapshot" type="button">Rename Snapshot</button>
-						<button id="create-playlist" type="button" onclick="create_playlist_button_on_click()">Create Playlist</button>
-					</div>
-					<select id="snapshot-select" size=10 onchange="update_tracks_table()">
-						<option selected>Current Tracks</option>
-					</select>
-				</div>
-			</div>
-			<div id="tracks-table-container">
-				<table id="tracks-table">
-					<thead>
-						<tr>
-							<th>
-								<div class="play-btn" id="play-all-btn">
-									<i class="fas fa-play"></i>
-								</div>
-							</th>
-							<th>Title</th>
-							<th>Artist</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snapshot</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <script src="https://kit.fontawesome.com/4186f26035.js" crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='index.js')}}"></script>
+  </head>
+  <body>
+    <h1>
+      Hey there <span id="display_name">{{ display_name }}</span>
+      <small><a href="/sign-out">[sign out]<a/></small>
+    </h1>
+    <div>
+      <div id="controls-container">
+        <button id="save-snapshot" type="button">Save Snapshot</button>
+        <button id="rename-snapshot" type="button">
+          Rename Snapshot
+        </button>
+        <button id="create-playlist" type="button" onclick="create_playlist_button_on_click()">
+          Create Playlist
+        </button>
+        <button id="delete-snapshot" type="button" onclick="delete_snapshot_button_on_click()">
+          Delete Snapshot
+        </button>
+      </div>
+      <div id="selects-container" class="flex-container">
+        <div id="playlist-container" class="flex-child">
+          <select id="playlist-select" size=10 onchange="update_snapshot_select()"></select>
+        </div>
+        <div id="snapshot-container" class="flex-child"> 
+          <select id="snapshot-select" size=10 onchange="update_tracks_table()">
+            <option selected>Current Tracks</option>
+          </select>
+        </div>
+      </div>
+      <div id="tracks-table-container">
+        <table id="tracks-table">
+          <thead>
+            <tr>
+              <th>
+                <div class="play-btn" id="play-all-btn">
+                  <i class="fas fa-play"></i>
+                </div>
+              </th>
+              <th>Title</th>
+              <th>Artist</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
 </html>
