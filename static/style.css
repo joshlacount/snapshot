@@ -88,7 +88,7 @@ select {
     background-image: linear-gradient(to top, #F9F9F9, #FFF 33%);
 }
 
-.select:after {
+.select::after {
     justify-self: end;
     content: "";
     width: 1em;
@@ -98,7 +98,7 @@ select {
 }
 
 select,
-.select:after {
+.select::after {
     grid-area: select;
 }
 
@@ -177,6 +177,17 @@ button:active {
 
 #selects-container {
     grid-column: 2;
+    display: grid;
+    grid-template-columns: 30ch 30ch;
+    gap: 10px;
+}
+
+#playlist-select-div {
+    grid-column: 1 / 2;
+}
+
+#snapshot-select-div {
+    grid-column: 2 / 3;
 }
 
 #controls-container {
@@ -213,16 +224,3 @@ button:active {
     text-align: center;
 }
 
-.flex-container {
-    display: flex;
-    justify-content: flex-start;
-}
-
-.flex-child {
-    flex: 0 1 auto;
-    width: 100%;
-}
-
-#selects-container {
-    width: 450px;
-}
