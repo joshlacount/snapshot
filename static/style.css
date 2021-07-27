@@ -192,6 +192,13 @@ button:active {
 
 #controls-container {
     grid-column: 2;
+    display: grid;
+    grid-auto-columns: minmax(auto, max-content);
+    gap: 10px;
+}
+
+#controls-container > button {
+    grid-row: 1 / 2;
 }
 
 #tracks-table-container {
