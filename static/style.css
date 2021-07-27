@@ -76,7 +76,7 @@ select {
     display: grid;
     grid-template-areas: "select";
     align-items: center;
-    width: 100%;
+    width: 30ch;
     position: relative;
     border: 2px solid black;
     border-radius: 10px;
@@ -178,16 +178,12 @@ button:active {
 #selects-container {
     grid-column: 2;
     display: grid;
-    grid-template-columns: 30ch 30ch;
+    grid-auto-columns: minmax(auto, max-content);
     gap: 10px;
 }
 
-#playlist-select-div {
-    grid-column: 1 / 2;
-}
-
-#snapshot-select-div {
-    grid-column: 2 / 3;
+#selects-container > .select {
+    grid-row: 1 / 2;
 }
 
 #controls-container {
