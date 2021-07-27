@@ -61,7 +61,55 @@ select {
 }
 
 select {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    padding: 0 1.5em 0 0;
+    margin: 0;
     width: 100%;
+    cursor: inherit;
+    line-height: inherit;
+    outline: none;
+}
+
+.select {
+    display: grid;
+    grid-template-areas: "select";
+    align-items: center;
+    width: 100%;
+    position: relative;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 0.25em 0.5em;
+    font-size: 1em;
+    cursor: pointer;
+    line-height: 1.1;
+    background-color: white;
+    background-image: linear-gradient(to top, #F9F9F9, #FFF 33%);
+}
+
+.select:after {
+    justify-self: end;
+    content: "";
+    width: 1em;
+    height: 0.5em;
+    background-color: #777;
+    clip-path: polygon(20% 0%, 0% 0%, 50% 100%, 100% 0%, 80% 0%, 50% 60%);
+}
+
+select,
+.select:after {
+    grid-area: select;
+}
+
+select:focus + .focus {
+    position: absolute;
+    top: -3px;
+    left: -2px;
+    right: -2px;
+    bottom: -3px;
+    border: 3px solid #1DB954;
+    border-radius: inherit;
 }
 
 table {
