@@ -270,4 +270,10 @@ button:active {
     justify-self: center;
     align-self: end;
     padding: 0 0 15px 0;
+    color: var(--green);
+    text-decoration: none;
+}
+
+#github-link:hover {
+    text-decoration: underline;
 }
