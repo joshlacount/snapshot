@@ -4,16 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snapshot</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}"/>
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='favicon.png')}}"/>
     <script src="https://kit.fontawesome.com/4186f26035.js" crossorigin="anonymous"></script>
     <script src="{{url_for('static', filename='index.js')}}"></script>
   </head>
   <body>
-    <h1>
-      Hey there <span id="display_name">{{ display_name }}</span>
-      <small><a href="/sign-out">[sign out]<a/></small>
-    </h1>
-    <div>
+    <div class="grid-container">
+      <div id="header">
+        <img id="name-img"  src="{{url_for('static', filename='snapshot.png')}}">
+        <button id="sign-out-button"  type="button" onclick="sign_out_button_on_click()">
+          Sign Out
+        </button>
+      </div>
+      <div id="selects-container">
+        <div id="playlist-select-div" class="select">
+          <select id="playlist-select" onchange="update_snapshot_select()"></select>
+        </div>
+        <div id="snapshot-select-div" class="select">
+          <select id="snapshot-select" onchange="update_tracks_table()">
+            <option selected>Current Tracks</option>
+          </select>
+        </div>
+      </div>
       <div id="controls-container">
         <button id="save-snapshot" type="button">Save Snapshot</button>
         <button id="rename-snapshot" type="button">
@@ -25,16 +38,6 @@
         <button id="delete-snapshot" type="button" onclick="delete_snapshot_button_on_click()">
           Delete Snapshot
         </button>
-      </div>
-      <div id="selects-container" class="flex-container">
-        <div id="playlist-container" class="flex-child">
-          <select id="playlist-select" size=10 onchange="update_snapshot_select()"></select>
-        </div>
-        <div id="snapshot-container" class="flex-child"> 
-          <select id="snapshot-select" size=10 onchange="update_tracks_table()">
-            <option selected>Current Tracks</option>
-          </select>
-        </div>
       </div>
       <div id="tracks-table-container">
         <table id="tracks-table">
@@ -53,6 +56,9 @@
           </tbody>
         </table>
       </div>
+      <a id="github-link" href="https://github.com/joshlacount/snapshot" target="_blank" rel="noopener noreferrer">
+        View on GitHub
+      </a>
     </div>
   </body>
 </html>
