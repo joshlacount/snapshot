@@ -147,6 +147,10 @@ function rename_snapshot(new_name) {
     request.send(params);
 }
 
+function sign_out_button_on_click() {
+    window.location = '/sign-out';
+}
+
 function create_playlist_button_on_click() {
     const snapshot_select = document.getElementById('snapshot-select');
     if (snapshot_select.selectedIndex <= 0) {
