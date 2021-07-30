@@ -56,6 +56,10 @@ select {
 
 /* My rules */
 
+:root {
+    --green: #1DB954;
+}
+
 * {
     font-family: Helvetica, sans-serif;
 }
@@ -108,12 +112,15 @@ select:focus + .focus {
     left: -2px;
     right: -2px;
     bottom: -3px;
-    border: 3px solid #1DB954;
+    border: 3px solid var(--green);
     border-radius: inherit;
 }
 
 table {
     width: 100%;
+    background-color: white;
+    border-collapse: collapse;
+    table-layout: fixed;
 }
 
 td, th {
@@ -121,9 +128,31 @@ td, th {
 }
 
 th {
-    background-color: lightgreen;
+    background-color: var(--green);
+    color: white;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
+}
+
+th:nth-child(1) {
+    width: 60px;
+}
+
+th:nth-child(2) {
+    width: 70%;
+}
+
+th:nth-child(3) {
+    width: 30%;
+}
+
+tr:nth-child(even) {
+    background-color: #F2F2F2;
+}
+
+tr:hover {
+    background-color: #DDD;
 }
 
 button {
@@ -149,7 +178,13 @@ button:active {
 .grid-container {
     display: grid;
     grid-template-columns: 30px 1fr 30px;
+    grid-template-rows: repeat(4, minmax(auto, min-content));
     row-gap: 15px;
+    height: 100vh;
+}
+
+.grid-container > * {
+    grid-column: 2 / 3;
 }
 
 #header {
@@ -159,7 +194,7 @@ button:active {
     align-items: center;
     width: 100%;
     height: 115px;
-    background-color: #1DB954;
+    background-color: var(--green);
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
 }
 
@@ -176,7 +211,6 @@ button:active {
 }
 
 #selects-container {
-    grid-column: 2;
     display: grid;
     grid-auto-columns: minmax(auto, max-content);
     gap: 10px;
@@ -187,7 +221,6 @@ button:active {
 }
 
 #controls-container {
-    grid-column: 2;
     display: grid;
     grid-auto-columns: minmax(auto, max-content);
     gap: 10px;
@@ -198,32 +231,43 @@ button:active {
 }
 
 #tracks-table-container {
-    grid-column: 2;
-    width: 800px;
-    height: 600px;
+    width: 100%;
+    height: 100%;
     overflow-y: scroll;
+    border: 2px solid black;
+    border-radius: 5px;
 }
 
 .play-btn {
     width: 40px;
     height: 15px;
     display: inline-block;
-    color: lightgreen;
-}
-
-.play-btn:hover, #play-all-btn:hover {
-    color: black;
-}
-
-.play-btn:active, #play-all-btn:active {
-    color: lightgray;
+    color: var(--green);
+    cursor: pointer;
 }
 
 #play-all-btn {
     color: white;
 }
 
+.play-btn:hover, #play-all-btn:hover {
+    color: black;
+}
+
+.play-btn:active {
+    color: white;
+}
+
+#play-all-btn:active {
+    color: lightgrey;
+}
+
 .play-btn-col {
     text-align: center;
 }
 
+#github-link {
+    justify-self: center;
+    align-self: end;
+    padding: 0 0 15px 0;
+}
